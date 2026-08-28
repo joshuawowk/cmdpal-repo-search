@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  Hand-authored rather than generated from a Package.appxmanifest, because in-build MSIX
+  tooling is disabled (it needs a Windows SDK this machine does not have).
+
+  Differences from the template's Package.appxmanifest, all required for a loose-folder
+  registration via Add-AppxPackage -Register:
+    * Executable / EntryPoint are concrete instead of $targetnametoken$ placeholders.
+    * EntryPoint is Windows.FullTrustApplication.
+    * Resource Language is a real language; x-generate would require makepri.
+    * Logo paths point at unqualified files that exist on disk (no PRI index here).
+
+  The CLSID below MUST stay identical in all three places:
+    [Guid(...)] on RepoSearchExtension, com:Class Id, and CreateInstance ClassId.
+  A mismatch registers fine and then silently never appears in Command Palette.
+-->
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
+  xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  IgnorableNamespaces="uap uap3 com rescap">
+
+  <Identity
+    Name="JoshuaWowk.RepositorySearchForCommandPalette"
+    Publisher="CN=Joshua Wowk"
+    Version="0.1.0.0"
+    ProcessorArchitecture="x64" />
+
+  <Properties>
+    <DisplayName>Repository Search</DisplayName>
+    <PublisherDisplayName>Joshua Wowk</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.19041.0" MaxVersionTested="10.0.26100.0" />
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.19041.0" MaxVersionTested="10.0.26100.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="en-us" />
+  </Resources>
+
+  <Applications>
+    <Application Id="RepositorySearch"
+      Executable="RepoSearch.Extension.exe"
+      EntryPoint="Windows.FullTrustApplication">
+
+      <uap:VisualElements
+        DisplayName="Repository Search"
+        Description="Search your git repositories locally and on GitHub"
+        BackgroundColor="transparent"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" />
+        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+      </uap:VisualElements>
+
+      <Extensions>
+        <com:Extension Category="windows.comServer">
+          <com:ComServer>
+            <com:ExeServer Executable="RepoSearch.Extension.exe"
+                           Arguments="-RegisterProcessAsComServer"
+                           DisplayName="Repository Search">
+              <com:Class Id="DC569BEC-66EE-4CD8-B76F-DA445CD6FCFB" DisplayName="Repository Search" />
+            </com:ExeServer>
+          </com:ComServer>
+        </com:Extension>
+
+        <uap3:Extension Category="windows.appExtension">
+          <uap3:AppExtension Name="com.microsoft.commandpalette"
+            Id="RepositorySearch"
+            PublicFolder="Public"
+            DisplayName="Repository Search"
+            Description="Search your git repositories locally and on GitHub">
+            <uap3:Properties>
+              <CmdPalProvider>
+                <Activation>
+                  <CreateInstance ClassId="DC569BEC-66EE-4CD8-B76F-DA445CD6FCFB" />
+                </Activation>
+                <SupportedInterfaces>
+                  <Commands />
+                </SupportedInterfaces>
+              </CmdPalProvider>
+            </uap3:Properties>
+          </uap3:AppExtension>
+        </uap3:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <!-- internetClient is what lets the extension reach the GitHub API. -->
+    <Capability Name="internetClient" />
+    <rescap:Capability Name="runFullTrust" />
+  </Capabilities>
+
+</Package>

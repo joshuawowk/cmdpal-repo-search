@@ -1,0 +1,10 @@
+bin/
+obj/
+.build/
+*.user
+*.pfx
+*.msix
+*.appx
+AppPackages/
+secrets.json
+.vs/

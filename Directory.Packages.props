@@ -1,0 +1,15 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- 0.12.x matches the Command Palette 0.12 installed on this machine.
+         The Toolkit assembly ships inside this same package; there is no separate
+         Microsoft.CommandPalette.Extensions.Toolkit package on nuget.org. -->
+    <PackageVersion Include="Microsoft.CommandPalette.Extensions" Version="0.12.260812002" />
+    <PackageVersion Include="Microsoft.Windows.CsWinRT" Version="2.2.0" />
+    <PackageVersion Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4188" />
+    <PackageVersion Include="Microsoft.Windows.SDK.BuildTools.MSIX" Version="1.7.20250829.1" />
+    <PackageVersion Include="Shmuelie.WinRTServer" Version="2.1.1" />
+  </ItemGroup>
+</Project>
