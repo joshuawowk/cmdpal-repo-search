@@ -41,7 +41,7 @@ internal sealed partial class RepoSearchPage : DynamicListPage, IDisposable
         Id = "repo-search.page";
         Name = "Search";
         Title = "Repository Search";
-        Icon = Glyphs.Repo;
+        Icon = Glyphs.Brand;
         PlaceholderText = "Search your repositories, locally and on GitHub...";
         ShowDetails = true;
 
@@ -49,7 +49,7 @@ internal sealed partial class RepoSearchPage : DynamicListPage, IDisposable
         {
             Title = "Type to search repositories",
             Subtitle = "Your repositories are matched first, then public GitHub repositories.",
-            Icon = Glyphs.Repo,
+            Icon = Glyphs.Brand,
         };
 
         // Warm the caches so the first keystroke already has data to filter.
@@ -211,7 +211,7 @@ internal sealed partial class RepoSearchPage : DynamicListPage, IDisposable
         {
             Title = title,
             Subtitle = subtitle,
-            Icon = _service.Warning is { Length: > 0 } ? Glyphs.Warning : Glyphs.Repo,
+            Icon = _service.Warning is { Length: > 0 } ? Glyphs.Warning : Glyphs.Brand,
         };
     }
 
