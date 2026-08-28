@@ -1,0 +1,73 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>RepoSearch.Extension</RootNamespace>
+    <AssemblyName>RepoSearch.Extension</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+    <WindowsSdkPackageVersion>10.0.26100.68-preview</WindowsSdkPackageVersion>
+    <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+
+    <Platforms>x64;ARM64</Platforms>
+    <PlatformTarget>$(Platform)</PlatformTarget>
+    <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
+    <SelfContained>true</SelfContained>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!--
+      This machine has NO Windows SDK and NO Visual Studio, which breaks two things by default.
+
+      1. cswinrt.exe fails with "Could not find the Windows SDK path in the registry", because
+         Microsoft.Windows.CsWinRT.targets defaults CsWinRTWindowsMetadata to the bare
+         TargetPlatformVersion and resolves it through the Windows Kits registry key, which
+         does not exist here. We don't need to generate a projection at all: the CmdPal SDK
+         ships a pre-projected managed Toolkit assembly.
+    -->
+    <CsWinRTGenerateProjection>false</CsWinRTGenerateProjection>
+
+    <!--
+      2. In-build MSIX packaging (Microsoft.Windows.SDK.BuildTools.MSIX) fails APPX3217 because
+         it needs Windows Kits\10\Platforms\UAP\<ver>\UAP.props. We deploy instead by publishing
+         a loose folder and registering it with Add-AppxPackage -Register, which needs neither
+         packaging tools nor a signing certificate (see build/install.ps1).
+    -->
+    <EnableMsixTooling>false</EnableMsixTooling>
+    <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
+    <GenerateAppxPackageOnBuild>false</GenerateAppxPackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!--
+      Trimming is off deliberately. The stock template enables PublishTrimmed in Release with
+      ILLinkTreatWarningsAsErrors; combined with WinRT interop it costs a lot of debugging for
+      little gain in a locally-installed extension. JSON is source-generated regardless
+      (RepoSearchJsonContext), so re-enabling this later is safe on that front.
+    -->
+    <PublishTrimmed>false</PublishTrimmed>
+    <PublishSingleFile>false</PublishSingleFile>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CommandPalette.Extensions" />
+    <PackageReference Include="Microsoft.Windows.CsWinRT" />
+    <PackageReference Include="Shmuelie.WinRTServer" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RepoSearch.Core\RepoSearch.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Manifest Include="$(ApplicationManifest)" />
+    <Content Include="Assets\**\*.png" CopyToOutputDirectory="PreserveNewest" />
+    <!-- Hand-authored because the packaging targets that would normally generate this are disabled. -->
+    <Content Include="AppxManifest.xml" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>
