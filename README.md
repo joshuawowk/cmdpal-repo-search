@@ -40,6 +40,35 @@ tree, `~` for index-only, nothing when clean.
 
 ---
 
+## Global search
+
+The extension contributes its top matches straight to Command Palette's main list, so you can
+type a repo name without opening Repository Search first. It registers **5 fallback slots**,
+each of which rewrites itself as you type and hides again when it has nothing to show.
+
+Global rows use the **local repositories and the cached GitHub catalog only** - never a live
+GitHub search, which would mean a network round-trip on every keystroke of every unrelated
+query you type into the palette. Queries shorter than 2 characters are ignored for the same
+reason.
+
+Each slot appears individually under **Settings > Fallback commands**, where it can be turned
+off; that is how you cap how many repositories reach global search. Each slot also has an
+**Include in global results** toggle, which controls *placement*:
+
+| Include in global results | Where repository rows appear |
+|---|---|
+| off (default for third-party extensions) | at the bottom, under the "Fallbacks" separator |
+| on | scored and interleaved with the rest of the global results |
+
+Command Palette defaults that toggle to on only for its own built-in extensions
+(`FallbackSettings(bool isBuiltIn)`), so turning it on is a deliberate user choice an extension
+cannot make for you. Either way the rows do show up - the toggle only decides where.
+
+To turn the whole thing off, use **Show repositories in global search** in this extension's own
+settings.
+
+---
+
 ## Install
 
 Requires Developer Mode (Settings → System → For developers). No Visual Studio, no Windows SDK,
@@ -198,6 +227,7 @@ folder but is compiled against .NET 10, so a net9 build dies with `CS1705`.
 | Scan depth | `3` | Levels below each root |
 | Search public GitHub repositories | on | Turn off for own-repos-only |
 | Show git status | on | |
+| Show repositories in global search | on | Adds top matches to the palette's main list |
 | Count untracked files in status | **off** | The 23 s vs 1.5 s lever |
 | Let Sync rebase diverged branches | off | |
 | Create new GitHub repos as private | on | Used by *Init* |

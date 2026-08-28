@@ -40,6 +40,14 @@ public sealed partial class SettingsManager : JsonSettingsManager
         "Also return other people's public repos, after your own results.",
         true);
 
+    private readonly ToggleSetting _showInGlobalResults = new(
+        Key(nameof(ShowInGlobalResults)),
+        "Show repositories in global search",
+        "Adds your top repository matches to Command Palette's main results, so you don't have "
+        + "to open Repository Search first. Individual slots can be toggled under "
+        + "Settings > Fallback commands.",
+        true);
+
     private readonly ToggleSetting _showGitStatus = new(
         Key(nameof(ShowGitStatus)),
         "Show git status",
@@ -89,6 +97,7 @@ public sealed partial class SettingsManager : JsonSettingsManager
 
     public bool SearchPublicRepos => _searchPublic.Value;
     public bool ShowGitStatus => _showGitStatus.Value;
+    public bool ShowInGlobalResults => _showInGlobalResults.Value;
     public bool IncludeUntracked => _includeUntracked.Value;
     public bool AllowRebaseOnSync => _allowRebase.Value;
     public bool NewRepoPrivate => _newRepoPrivate.Value;
@@ -122,6 +131,7 @@ public sealed partial class SettingsManager : JsonSettingsManager
         Settings.Add(_scanDepth);
         Settings.Add(_searchPublic);
         Settings.Add(_showGitStatus);
+        Settings.Add(_showInGlobalResults);
         Settings.Add(_includeUntracked);
         Settings.Add(_allowRebase);
         Settings.Add(_newRepoPrivate);
