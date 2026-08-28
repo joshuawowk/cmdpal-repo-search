@@ -11,6 +11,7 @@ public sealed partial class RepoSearchCommandsProvider : CommandProvider
     private readonly RepoSearchService _service;
     private readonly RepoSearchPage _page;
     private readonly ICommandItem[] _commands;
+    private readonly IFallbackCommandItem[] _fallbacks;
 
     public RepoSearchCommandsProvider()
     {
@@ -46,6 +47,16 @@ public sealed partial class RepoSearchCommandsProvider : CommandProvider
             },
         ];
 
+        // Contribute the top matches straight to CmdPal's main list, so repositories are
+        // reachable without opening the page first. One coordinator computes the result set
+        // once per query and every slot reads from it.
+        var coordinator = new FallbackSearchCoordinator(_service, _settingsManager);
+        var rowBuilder = new RepoRowBuilder(_settingsManager, _service);
+
+        _fallbacks = new IFallbackCommandItem[RepoFallbackItem.SlotCount];
+        for (var slot = 0; slot < RepoFallbackItem.SlotCount; slot++)
+            _fallbacks[slot] = new RepoFallbackItem(slot, coordinator, rowBuilder);
+
         // Surfacing Settings here is what makes CmdPal show this extension in its settings UI.
         Settings = _settingsManager.Settings;
 
@@ -54,6 +65,8 @@ public sealed partial class RepoSearchCommandsProvider : CommandProvider
     }
 
     public override ICommandItem[] TopLevelCommands() => _commands;
+
+    public override IFallbackCommandItem[] FallbackCommands() => _fallbacks;
 
     public override void Dispose()
     {

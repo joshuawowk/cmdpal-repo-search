@@ -143,6 +143,27 @@ public sealed class RepoSearchService : IDisposable
 
     // ------------------------------------------------------------------ querying
 
+    /// <summary>True once the index exists, so a synchronous caller can search without blocking.</summary>
+    public bool IsWarm => _index is not null;
+
+    private int _warming;
+
+    /// <summary>
+    /// Kicks off initialisation without waiting. Used by the global-search fallback handler,
+    /// which is called synchronously on a CmdPal worker thread and must never block on IO.
+    /// </summary>
+    public void WarmInBackground()
+    {
+        if (Interlocked.Exchange(ref _warming, 1) == 1) return;
+
+        _ = Task.Run(async () =>
+        {
+            try { await EnsureReadyAsync(DateTimeOffset.UtcNow, CancellationToken.None).ConfigureAwait(false); }
+            catch { /* the page surfaces failures; global search just stays empty */ }
+            finally { Interlocked.Exchange(ref _warming, 0); }
+        });
+    }
+
     /// <summary>Instant, in-memory: local repos plus the cached GitHub catalog. No IO.</summary>
     public List<SearchResult> SearchLocal(string query, DateTimeOffset now, int limit = 60) =>
         _index?.Build(query, publicHits: null, now, limit) ?? [];
