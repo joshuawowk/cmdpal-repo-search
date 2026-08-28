@@ -10,6 +10,13 @@ namespace RepoSearch.Extension.Commands;
 /// </summary>
 internal static class Glyphs
 {
+    // The extension's own artwork, used for the provider, the page and the empty state.
+    // Cached because IconHelpers.FromRelativePath allocates a new IconInfo per call and
+    // GetItems() is a hot path.
+    private static readonly IconInfo _brand = IconHelpers.FromRelativePath(@"Assets\RepoSearchIcon.png");
+
+    public static IconInfo Brand => _brand;
+
     public static IconInfo Folder => new("\uE838");           // FolderOpen
     public static IconInfo Code => new("\uE943");             // Code
     public static IconInfo Globe => new("\uE774");            // Globe

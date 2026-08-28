@@ -16,7 +16,7 @@ public sealed partial class RepoSearchCommandsProvider : CommandProvider
     {
         Id = "repo-search";
         DisplayName = "Repository Search";
-        Icon = IconHelpers.FromRelativePath("Assets\\StoreLogo.png");
+        Icon = Glyphs.Brand;
 
         _service = new RepoSearchService(_settingsManager);
         _page = new RepoSearchPage(_settingsManager, _service);
