@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.installer.1.12.0.schema.json
+#
+# NOT SUBMITTED. Before opening a PR to microsoft/winget-pkgs:
+#   * The MSIX must be signed by a certificate end users trust (Store-signed or a public
+#     code-signing cert). An unsigned or self-signed package fails WinGet validation.
+#   * TODO: fill InstallerSha256 / SignatureSha256 from the release assets
+#     (wingetcreate new/update computes both).
+#   * TODO: PackageFamilyName depends on the final signing Publisher; replace the hash suffix.
+
+PackageIdentifier: JoshuaWowk.RepositorySearchForCommandPalette
+PackageVersion: 0.1.0
+Platform:
+- Windows.Desktop
+MinimumOSVersion: 10.0.19041.0
+InstallerType: msix
+PackageFamilyName: JoshuaWowk.RepositorySearchForCommandPalette_TODO-publisher-hash
+Installers:
+- Architecture: x64
+  InstallerUrl: https://github.com/joshuawowk/cmdpal-repo-search/releases/download/v0.1.0/RepositorySearch_0.1.0.0_x64.msix
+  InstallerSha256: TODO
+  SignatureSha256: TODO
+- Architecture: arm64
+  InstallerUrl: https://github.com/joshuawowk/cmdpal-repo-search/releases/download/v0.1.0/RepositorySearch_0.1.0.0_arm64.msix
+  InstallerSha256: TODO
+  SignatureSha256: TODO
+ManifestType: installer
+ManifestVersion: 1.12.0

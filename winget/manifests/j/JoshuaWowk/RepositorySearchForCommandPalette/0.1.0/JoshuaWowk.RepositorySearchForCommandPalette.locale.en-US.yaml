@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.12.0.schema.json
+
+PackageIdentifier: JoshuaWowk.RepositorySearchForCommandPalette
+PackageVersion: 0.1.0
+PackageLocale: en-US
+Publisher: Joshua Wowk
+PublisherUrl: https://github.com/joshuawowk
+PublisherSupportUrl: https://github.com/joshuawowk/cmdpal-repo-search/issues
+Author: Joshua Wowk
+PackageName: Repository Search for Command Palette
+PackageUrl: https://github.com/joshuawowk/cmdpal-repo-search
+License: MIT
+LicenseUrl: https://github.com/joshuawowk/cmdpal-repo-search/blob/main/LICENSE
+ShortDescription: Search your local git repositories and GitHub from PowerToys Command Palette.
+Description: |-
+  A PowerToys Command Palette extension that searches your local clone folders and GitHub at the
+  same time, ranks your own repositories first, shows a posh-git style status for local clones, and
+  opens, clones, forks or syncs them without leaving the palette.
+Moniker: cmdpal-repo-search
+Tags:
+- windows-commandpalette-extension
+- powertoys-command-palette
+- powertoys
+- git
+- github
+- repository
+ReleaseNotesUrl: https://github.com/joshuawowk/cmdpal-repo-search/releases/tag/v0.1.0
+ManifestType: defaultLocale
+ManifestVersion: 1.12.0
