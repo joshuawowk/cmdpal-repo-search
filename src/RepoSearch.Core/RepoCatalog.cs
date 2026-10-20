@@ -68,7 +68,7 @@ public sealed class RepoCatalog
     /// GET /repos/{owner}/{name} follows renames, so a stale clone URL still resolves.
     /// Results are cached permanently (renames) or as tombstones (deleted repos).
     ///
-    /// Real example on this machine: a clone pointing at joshuawowk/radio-tools resolves to
+    /// Example: a clone pointing at joshuawowk/radio-tools resolves to
     /// joshuawowk/radio-toolkit.
     /// </summary>
     public async Task<int> ResolveRenamesAsync(IEnumerable<string> unmatchedKeys, CancellationToken ct = default)
