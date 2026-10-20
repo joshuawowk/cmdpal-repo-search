@@ -76,5 +76,5 @@ jobs:
             gh release upload "$TAG" artifacts/* --clobber --repo "$GITHUB_REPOSITORY"
           else
             gh release create "$TAG" artifacts/* --repo "$GITHUB_REPOSITORY" \
-              --title "Repository Search $TAG" --generate-notes --verify-tag
+              --title "Repository Search $TAG" --generate-notes --verify-tag --draft
           fi
