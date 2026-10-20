@@ -76,14 +76,29 @@ settings.
 
 Requires [PowerToys](https://github.com/microsoft/PowerToys) with Command Palette enabled.
 
-### WinGet (once published)
+### Microsoft Store (coming soon)
+
+The Microsoft Store is the main distribution route and is not live yet: the listing is being prepared
+and still has to pass Microsoft's certification. Command Palette discovers extensions only through MSIX
+package registration, and the Store signs the package, so once it is live a normal Store install will
+just work (restart Command Palette if the extension does not appear). This section will then link to
+the listing. Submission details are in
+[`store/PARTNER-CENTER.md`](store/PARTNER-CENTER.md) and the privacy policy is in
+[`docs/PRIVACY.md`](docs/PRIVACY.md).
+
+### WinGet (not planned for now)
+
+There is no WinGet package, and none is planned for now: WinGet installs an MSIX only if it is signed by
+a trusted certificate, and this project does not have one outside the Store. The draft manifests under
+`winget/` are not submitted and are only there for reference. Once the Store listing is live, WinGet
+will be able to install it from the Store source, using the Store product ID that will be listed here:
 
 ```powershell
-winget install JoshuaWowk.RepositorySearchForCommandPalette
+winget install --source msstore <Store product ID>
 ```
 
-It will also be findable from inside Command Palette via **Search WinGet**. Restart Command
-Palette after installing.
+Until then, don't run `winget install JoshuaWowk.RepositorySearchForCommandPalette`; that package does not
+exist.
 
 ### Manual installer from Releases (once releases are signed)
 
@@ -94,10 +109,9 @@ Download `RepositorySearch_<version>_x64.msix` (or `_arm64.msix`, or the `.msixb
 Add-AppxPackage .\RepositorySearch_0.1.0.0_x64.msix
 ```
 
-Command Palette discovers extensions only through MSIX package registration
-(`AppExtensionCatalog`), so the extension ships as an MSIX rather than a plain EXE installer. An
-MSIX installs on other machines only when it is signed by a trusted certificate; until signed
-releases exist, use the build-from-source route below.
+An MSIX installs on other machines only when it is signed by a trusted certificate. The release
+workflow builds unsigned packages (the Store signs the one it distributes), so until signed releases
+exist, use the build-from-source route below.
 
 ### Build from source
 
