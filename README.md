@@ -1,5 +1,8 @@
 # Repository Search — a PowerToys Command Palette extension
 
+[![Release](https://img.shields.io/github/v/release/joshuawowk/cmdpal-repo-search?include_prereleases&sort=semver)](https://github.com/joshuawowk/cmdpal-repo-search/releases)
+[![License: MIT](https://img.shields.io/github/license/joshuawowk/cmdpal-repo-search)](LICENSE)
+
 Search your git repositories **locally and on GitHub at the same time**, with your own repos
 ranked first, and act on whichever one you find.
 
@@ -71,12 +74,42 @@ settings.
 
 ## Install
 
-Requires Developer Mode (Settings → System → For developers). No Visual Studio, no Windows SDK,
-no signing certificate.
+Requires [PowerToys](https://github.com/microsoft/PowerToys) with Command Palette enabled.
+
+### WinGet (once published)
+
+```powershell
+winget install JoshuaWowk.RepositorySearchForCommandPalette
+```
+
+It will also be findable from inside Command Palette via **Search WinGet**. Restart Command
+Palette after installing.
+
+### Manual installer from Releases (once releases are signed)
+
+Download `RepositorySearch_<version>_x64.msix` (or `_arm64.msix`, or the `.msixbundle`) from
+[Releases](https://github.com/joshuawowk/cmdpal-repo-search/releases) and double-click it, or:
+
+```powershell
+Add-AppxPackage .\RepositorySearch_0.1.0.0_x64.msix
+```
+
+Command Palette discovers extensions only through MSIX package registration
+(`AppExtensionCatalog`), so the extension ships as an MSIX rather than a plain EXE installer. An
+MSIX installs on other machines only when it is signed by a trusted certificate; until signed
+releases exist, use the build-from-source route below.
+
+### Build from source
+
+Requires Developer Mode (Settings → System → For developers) and the .NET 10 SDK. No Visual
+Studio, no Windows SDK, no signing certificate.
 
 ```powershell
 pwsh -File build\install.ps1 -RestartCmdPal
 ```
+
+`build\build-msix.ps1` produces the distributable `.msix`/`.msixbundle` packages (needs the
+Windows SDK for `makeappx.exe`; the release workflow runs it on GitHub's `windows-2022` runners).
 
 To remove it:
 
