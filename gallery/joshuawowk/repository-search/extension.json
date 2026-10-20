@@ -1,0 +1,22 @@
+{
+  "$schema": "../../../.github/schemas/extension.schema.json",
+  "id": "joshuawowk.repository-search",
+  "title": "Repository Search",
+  "shortDescription": "Search your local git repositories and GitHub in one list, with git status and clone, fork and sync actions.",
+  "description": "Repository Search queries your local clone folders and GitHub at the same time and ranks your own repositories first. Paired repositories (a GitHub repo with a local clone) open in Explorer, VS Code or the browser and can be synced; uncloned GitHub repositories can be cloned; local repositories without a remote can be published with Init; other people's public repositories can be starred, forked or cloned. Local rows show a posh-git style status summary. Top matches can also appear in Command Palette's global search. A GitHub token is optional and is stored in Windows Credential Manager, never in settings.",
+  "author": {
+    "name": "Joshua Wowk",
+    "url": "https://github.com/joshuawowk"
+  },
+  "icon": "icon.png",
+  "homepage": "https://github.com/joshuawowk/cmdpal-repo-search",
+  "tags": ["git", "github", "repositories", "clone", "developer"],
+  "categories": ["developer-tools", "productivity", "utilities-and-tools"],
+  "installSources": [
+    {
+      "type": "winget",
+      "id": "JoshuaWowk.RepositorySearchForCommandPalette"
+    }
+  ],
+  "listed": true
+}
