@@ -1,0 +1,80 @@
+name: Release extension
+
+# Builds MSIX packages for x64 and ARM64 plus an .msixbundle.
+#   * push of a v* tag    -> build, then create a GitHub Release with the packages attached.
+#   * workflow_dispatch   -> build and upload the packages as workflow artifacts only, unless
+#                            publish=true AND the run targets a v* tag.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Create/update the GitHub Release (only when run against a v* tag)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Resolve version
+        id: version
+        shell: pwsh
+        run: |
+          $v = ''
+          if ($env:GITHUB_REF_TYPE -eq 'tag' -and $env:GITHUB_REF_NAME -like 'v*') {
+            $v = $env:GITHUB_REF_NAME.Substring(1)
+          }
+          "version=$v" >> $env:GITHUB_OUTPUT
+
+      - name: Build MSIX packages
+        shell: pwsh
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          IDENTITY_NAME: ${{ vars.MSIX_IDENTITY_NAME }}
+          IDENTITY_PUBLISHER: ${{ vars.MSIX_IDENTITY_PUBLISHER }}
+          SIGNING_PFX_BASE64: ${{ secrets.SIGNING_PFX_BASE64 }}
+          SIGNING_PFX_PASSWORD: ${{ secrets.SIGNING_PFX_PASSWORD }}
+        run: ./build/build-msix.ps1 -Version "$env:VERSION" -OutputDir artifacts
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: repository-search-msix
+          path: |
+            artifacts/*.msix
+            artifacts/*.msixbundle
+          if-no-files-found: error
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v') && (github.event_name == 'push' || inputs.publish)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: repository-search-msix
+          path: artifacts
+
+      - name: Create or update GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" artifacts/* --clobber --repo "$GITHUB_REPOSITORY"
+          else
+            gh release create "$TAG" artifacts/* --repo "$GITHUB_REPOSITORY" \
+              --title "Repository Search $TAG" --generate-notes --verify-tag
+          fi

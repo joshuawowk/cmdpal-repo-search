@@ -8,3 +8,6 @@ obj/
 AppPackages/
 secrets.json
 .vs/
+
+# MSIX build output (build/build-msix.ps1)
+artifacts/
