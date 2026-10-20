@@ -16,16 +16,40 @@ public sealed partial class SettingsManager : JsonSettingsManager
 
     private static string Key(string name) => $"{Ns}.{name}";
 
-    private static readonly string DefaultRoot =
-        Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-            "OneDrive", "Repositories");
+    /// <summary>
+    /// Conventional places people keep clones, relative to the user profile. The first one is
+    /// Visual Studio's default and is used when none of them exist yet.
+    /// </summary>
+    private static readonly string[] CandidateRoots =
+    [
+        Path.Combine("source", "repos"),
+        "Repos",
+        "Repositories",
+        Path.Combine("Documents", "GitHub"),
+    ];
+
+    /// <summary>
+    /// Default scan roots: whichever conventional folders exist under the user profile, or
+    /// %USERPROFILE%\source\repos when none do. Only a default — a path the user has saved in
+    /// settings always wins.
+    /// </summary>
+    private static readonly IReadOnlyList<string> DefaultRoots = DetectDefaultRoots();
+
+    private static readonly string DefaultRoot = DefaultRoots[0];
+
+    private static IReadOnlyList<string> DetectDefaultRoots()
+    {
+        var profile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        var all = CandidateRoots.Select(r => Path.Combine(profile, r)).ToList();
+        var existing = all.Where(Directory.Exists).ToList();
+        return existing.Count > 0 ? existing : [all[0]];
+    }
 
     private readonly TextSetting _localRoots = new(
         Key(nameof(LocalRoots)),
         "Local repository folders",
         "One folder per line. Each is scanned for git repositories.",
-        DefaultRoot)
+        string.Join(Environment.NewLine, DefaultRoots))
     { Multiline = true };
 
     private readonly TextSetting _scanDepth = new(

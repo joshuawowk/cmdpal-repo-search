@@ -223,7 +223,7 @@ folder but is compiled against .NET 10, so a net9 build dies with `CS1705`.
 
 | Setting | Default | Notes |
 |---|---|---|
-| Local repository folders | `…\OneDrive\Repositories` | One per line |
+| Local repository folders | whichever of `%USERPROFILE%\source\repos`, `\Repos`, `\Repositories`, `\Documents\GitHub` exist (else `source\repos`) | One per line |
 | Scan depth | `3` | Levels below each root |
 | Search public GitHub repositories | on | Turn off for own-repos-only |
 | Show git status | on | |

@@ -7,7 +7,8 @@ Console.OutputEncoding = Encoding.UTF8;
 
 var root = args.Length > 0
     ? args[0]
-    : @"C:\Users\jwowk\OneDrive\Repositories";
+    : Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "source", "repos");
 
 // ---------------------------------------------------------------- remote parsing
 Console.WriteLine("=== GitRemote.Parse ===");
