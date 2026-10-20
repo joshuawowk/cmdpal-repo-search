@@ -191,9 +191,8 @@ INSTALL POWERTOYS AND ENABLE COMMAND PALETTE (about 5 minutes)
 
 INSTALL AND EXERCISE THE EXTENSION
 4. Install this package from the Store listing (or from the submitted package).
-5. Command Palette discovers newly installed extensions on its own. If "Repository Search" does not
-   appear within a minute, run the "Reload" command in Command Palette, or exit PowerToys from its
-   tray icon and start it again.
+5. Restart Command Palette so it picks up the new extension: run its "Reload" command, or exit
+   PowerToys from its tray icon and start it again.
 6. Create a test repository for it to find. In a terminal:
    mkdir %USERPROFILE%\source\repos\certification-test
    cd %USERPROFILE%\source\repos\certification-test
@@ -201,7 +200,8 @@ INSTALL AND EXERCISE THE EXTENSION
    (The extension scans %USERPROFILE%\source\repos by default. Another folder can be set in the
    extension's settings: Command Palette > Settings > Extensions > Repository Search.)
 7. Press Win+Alt+Space, type "Repository Search" and press Enter. Type "certification". The test
-   repository appears as a local repository with a git status summary, and its actions (Enter for
+   repository appears as a local repository (with a git status summary when Git for Windows is
+   installed), and its actions (Enter for
    the default, Ctrl+K for more) include opening it in File Explorer or in Visual Studio Code (if
    installed). A "No GitHub token" notice is expected and normal.
 8. Optional, to see the GitHub half (needs your own free GitHub account and a personal access token

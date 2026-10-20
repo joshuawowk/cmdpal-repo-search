@@ -155,8 +155,8 @@ Do this only after Claude confirms step 3 is done.
      the `winget install --source msstore 9XXXXXXXXXXX` command;
    - update `gallery/joshuawowk/repository-search/extension.json`: add an install source
      `{"type": "msstore", "id": "9XXXXXXXXXXX"}`, add the package family name for installed-state detection
-     if you sent it, and **remove the existing `winget` install source**, because no WinGet package is
-     published and the Gallery only accepts sources that exist;
+     if you sent it, and **remove the existing `winget` install source**, because there is no WinGet
+     package and none is planned;
    - fork `microsoft/CmdPal-Extensions`, add `extensions/joshuawowk/repository-search/` (the JSON, the
      icon and, if you send them, the screenshots) and open the pull request. Merge and the later refresh
      of the Gallery feed are done by Microsoft's maintainers.
